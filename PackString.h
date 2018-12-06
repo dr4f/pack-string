@@ -58,12 +58,19 @@ public:
 
 	size_t getLen() const { return _len; }
 	size_t getCap() const { return _cap; }
+	bool isFull() const { return _cap == _len; }
 	T* getPtr() const { return _items; }
 
 	T& operator[] (size_t index)
 	{
 		if(index > _len) throw MallocArrayException(MallocArrayException::OUT_OF_BOUNDS);
 		else return _items[index];
+	}
+
+	void push(const T& item)
+	{
+		if(isFull()) expand();
+		_items[_len++] = item;
 	}
 private:
 	void expand()
