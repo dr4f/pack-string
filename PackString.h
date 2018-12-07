@@ -112,15 +112,28 @@ public:
 	size_t dataSize() const { return _data.getLen(); }
 	size_t indexesSize() const { return _indexes.getLen(); }
 	unsigned char* bytes() const { return _data.getPtr(); }
-
+	/**
+	 * @brief Writes the bytes of a native C++ object into the PackString
+	 * @detail According to the result of sizeof on the object, will write each
+	 *         byte in the objects memory into the PackString.
+	 */
 	template<class T>
-	void write(const T& item)
+	void writeObject(const T& item)
 	{
 		size_t itemSize = sizeof(item);
 		unsigned char* itemBytes = reinterpret_cast<unsigned char*>(&item);
 		addNextIndex();
 		for(size_t i = 0; i < itemSize; i++) _data.push(itemBytes[i]);
 	}
+    /**
+     * @brief An interface writing function meant to be overloaded with type
+     *        specific function handlers.
+     */
+    template<class T>
+    void write(const T& item)
+    {
+    	append_bytes(*this, item);
+    }
 private:
 	void addNextIndex() { _indexes.push(_data.getLen()); }
 private:
