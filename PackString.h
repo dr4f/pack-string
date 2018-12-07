@@ -99,7 +99,10 @@ private:
 	T* _items;
 };
 
-
+/**
+ * @class PackString
+ * @brief A special string class that allows packing objects into binary formats.
+ */
 class PackString
 {
 public:
@@ -108,6 +111,18 @@ public:
 
 	size_t dataSize() const { return _data.getLen(); }
 	size_t indexesSize() const { return _indexes.getLen(); }
+	unsigned char* bytes() const { return _data.getPtr(); }
+
+	template<class T>
+	void write(const T& item)
+	{
+		size_t itemSize = sizeof(item);
+		unsigned char* itemBytes = reinterpret_cast<unsigned char*>(&item);
+		addNextIndex();
+		for(size_t i = 0; i < itemSize; i++) _data.push(itemBytes[i]);
+	}
+private:
+	void addNextIndex() { _indexes.push(_data.getLen()); }
 private:
 	MallocArray<size_t> _indexes;
 	MallocArray<unsigned char> _data;
