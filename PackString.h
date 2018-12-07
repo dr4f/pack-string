@@ -76,7 +76,7 @@ public:
 	T* getPtr() const { return _items; }
 	T* getEnd() const { return _items + _len; }
 
-	T& operator[] (size_t index)
+	T& operator[] (size_t index) const
 	{
 		if(index > _len) throw MallocArrayException(MallocArrayException::OUT_OF_BOUNDS);
 		else return _items[index];
