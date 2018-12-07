@@ -5,6 +5,7 @@
 #include <exception>
 #include <cstdlib>
 #include <cstdint>
+#include <algorithm>
 
 /**
  * @brief Macro allows realloc to be used in CPP with cast requirements
@@ -55,6 +56,15 @@ public:
 	{
 		if(_items == nullptr) throw MallocArrayException(MallocArrayException::NULL_ON_MALLOC);
 	}
+
+	MallocArray(const MallocArray& other): _len(other.getLen()),
+	                                       _cap(other.getCap()),
+	                                       _items(reinterpret_cast<T*>(std::malloc(_cap)))
+	{
+		if(_items == nullptr) throw MallocArrayException(MallocArrayException::NULL_ON_MALLOC);
+		std::copy(other.getPtr(), other.getEnd(), _items);
+
+	}
 	~MallocArray()
 	{
 		std::free(_items);
@@ -64,6 +74,7 @@ public:
 	size_t getCap() const { return _cap; }
 	bool isFull() const { return _cap == _len; }
 	T* getPtr() const { return _items; }
+	T* getEnd() const { return _items + _len; }
 
 	T& operator[] (size_t index)
 	{
@@ -116,6 +127,8 @@ public:
 	 * @brief Writes the bytes of a native C++ object into the PackString
 	 * @detail According to the result of sizeof on the object, will write each
 	 *         byte in the objects memory into the PackString.
+	 * @note When using this with class {} or struct {} defined objects, it will include
+	 *       all data of the object, even OS padding.
 	 */
 	template<class T>
 	void writeObject(const T& item)
@@ -128,11 +141,26 @@ public:
     /**
      * @brief An interface writing function meant to be overloaded with type
      *        specific function handlers.
+     * @detail This template calls the implemented append_bytes function for the type
+     *         passed in as the item. This allows append_bytes functions to be implemented
+     *         in different files/translation units.
      */
     template<class T>
     void write(const T& item)
     {
+    	addNextIndex();
     	append_bytes(*this, item);
+    }
+
+    /**
+     * @brief Operator function that wraps the write() method for
+     *        chainable calls.
+     */
+    template<class T>
+    PackString& operator << (const T& item)
+    {
+    	write(item);
+    	return *this;
     }
 private:
 	void addNextIndex() { _indexes.push(_data.getLen()); }
