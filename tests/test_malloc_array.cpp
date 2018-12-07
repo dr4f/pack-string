@@ -64,6 +64,15 @@ void test_array_shrink()
 	TEST_CHECK_ALL(arr.getLen() == 1, failureCount);
 }
 
+void test_array_copy()
+{
+	MallocArray<long> arr1;
+	arr1.push(5);
+	arr1.push(8);
+	MallocArray<long> arr2(arr1);
+	TEST_CHECK_ALL(arr1[0] == 5 && arr1[1] == 8, failureCount);
+}
+
 int main(int argc, char const *argv[])
 {
 	test_array_init();
@@ -72,6 +81,7 @@ int main(int argc, char const *argv[])
 	test_array_expand();
 	test_array_exc();
 	test_array_shrink();
+	test_array_copy();
 	if(failureCount > 0) {
 		std::cout << "TESTS FAILED\n";
 		return 3;
