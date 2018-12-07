@@ -120,9 +120,14 @@ public:
 	PackString(){}
 	~PackString(){}
 
+	const MallocArray<size_t>& getIndexes() const { return _indexes; }
 	size_t dataSize() const { return _data.getLen(); }
 	size_t indexesSize() const { return _indexes.getLen(); }
-	unsigned char* bytes() const { return _data.getPtr(); }
+	/* @brief Function that retrieves the start of the binary data pointer. 
+	 * @note Returns pointer to be interfacable with std copy and handlers.
+	 */
+	const unsigned char* bytes() const { return _data.getPtr(); }
+	const unsigned char* bytesEnd() const { return _data.getEnd(); }
 	/**
 	 * @brief Writes the bytes of a native C++ object into the PackString
 	 * @detail According to the result of sizeof on the object, will write each
@@ -134,7 +139,7 @@ public:
 	void writeObject(const T& item)
 	{
 		size_t itemSize = sizeof(item);
-		unsigned char* itemBytes = reinterpret_cast<unsigned char*>(&item);
+		const unsigned char* itemBytes = reinterpret_cast<const unsigned char*>(&item);
 		addNextIndex();
 		for(size_t i = 0; i < itemSize; i++) _data.push(itemBytes[i]);
 	}

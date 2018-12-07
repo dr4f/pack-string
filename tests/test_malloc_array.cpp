@@ -83,10 +83,10 @@ int main(int argc, char const *argv[])
 	test_array_shrink();
 	test_array_copy();
 	if(failureCount > 0) {
-		std::cout << "TESTS FAILED\n";
+		std::cout << "\nTESTS FAILED\n";
 		return 3;
 	} else {
-		std::cout << "TESTS PASSED\n";
+		std::cout << "\nTESTS PASSED\n";
 		return 0;
 	}
 }

@@ -5,20 +5,23 @@
 static unsigned failCount = 0;
 
 
-void test_one()
+void test_write_object_1()
 {
-	TEST_CHECK_ALL(3 == 3, failCount);
+	PackString a;
+	long b = 5000;
+	a.writeObject(b);
+	TEST_CHECK_ALL(a.dataSize() == sizeof(long), failCount);
 }
 
 
 int main(int argc, char const *argv[])
 {
-	test_one();
+	test_write_object_1();
 	if(failCount > 0) {
-		std::cout << "TESTS FAILED\n";
+		std::cout << "\nTESTS FAILED\n";
 		return 3;
 	} else {
-		std::cout << "TESTS PASSED\n";
+		std::cout << "\nTESTS PASSED\n";
 		return 0;
 	}
 }

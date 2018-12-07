@@ -5,7 +5,7 @@
 
 /* Test helper macro that prints out if a condition passed or failed and the line number
  */
-#define TEST_DEBUG_COND(cond) std::cout << "Test for '" << #cond << "' at line " << __LINE__ << (cond ? " passed." : " failed.")
+#define TEST_DEBUG_COND(cond) std::cout << "Test for '" << #cond << "' at line " << __LINE__ << (cond ? " passed.\n" : " failed.\n")
 
 /* Test helper macro that increments a variable if a test fails.
  */
