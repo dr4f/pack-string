@@ -13,6 +13,8 @@ MallocArrayException::MallocArrayException(MallocArrayException::ErrType code): 
 		case OUT_OF_BOUNDS:
 		        message = "MallocArrayErr: Attempted to access an item out of bounds.";
 		        break;
-
+		case SHRINK_LARGER:
+		        message = "MallocArrayErr: Cannot use shrink() on size larger than current length.";
+		        break;
 	}
 }

@@ -21,7 +21,8 @@ struct MallocArrayException : public std::exception
 	{
 		NULL_ON_MALLOC,
 		NULL_ON_REALLOC,
-		OUT_OF_BOUNDS
+		OUT_OF_BOUNDS,
+		SHRINK_LARGER
 	};
 
 	MallocArrayException(MallocArrayException::ErrType code);
@@ -75,6 +76,12 @@ public:
 		if(isFull()) expand();
 		_items[_len++] = item;
 	}
+
+	void shrink(size_t smaller)
+	{
+		if(smaller >= _len) throw MallocArrayException(MallocArrayException::SHRINK_LARGER);
+		_len = smaller;
+	}
 private:
 	void expand()
 	{
@@ -95,7 +102,14 @@ private:
 
 class PackString
 {
+public:
+	PackString(){}
+	~PackString(){}
+
+	size_t dataSize() const { return _data.getLen(); }
+	size_t indexesSize() const { return _indexes.getLen(); }
 private:
+	MallocArray<size_t> _indexes;
 	MallocArray<unsigned char> _data;
 };
 
