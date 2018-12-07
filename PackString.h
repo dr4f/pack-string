@@ -11,7 +11,10 @@
  */
 #define CPP_REALLOC(ptr, type, new_size) reinterpret_cast<type*>(std::realloc(reinterpret_cast<void*>(ptr), new_size))
 
-
+/**
+ * @brief Small exception class to handle array related errors for -s MallocArray
+ *        
+ */
 struct MallocArrayException : public std::exception
 {
 	enum ErrType
@@ -93,8 +96,7 @@ private:
 class PackString
 {
 private:
-	// todo
-	int _a;
+	MallocArray<unsigned char> _data;
 };
 
 #endif // PACK_STRING_LIB_H
