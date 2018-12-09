@@ -55,8 +55,18 @@ void append_bytes(PackString& pstring, const TestObject& obj)
 	}
 }
 
+void test_append_bytes()
+{
+	TestObject tob;
+	PackString ps;
+	makeTestObject(tob);
+	ps << tob;
+	TEST_CHECK_ALL(ps.dataSize() > 1, failCount);
+}
+
 int main(int argc, char const *argv[])
 {
+	test_append_bytes();
 	if(failCount > 0) {
 		std::cout << "\nTESTS FAILED\n";
 		return 3;
