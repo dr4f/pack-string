@@ -167,6 +167,11 @@ public:
     	write(item);
     	return *this;
     }
+	/**
+	 * @brief This method is primarily intended to be used with implementations of
+	 *        append_bytes() as friend functions.
+	 */
+	void pushByte(unsigned char byte) { _data.push(byte); }
 private:
 	void addNextIndex() { _indexes.push(_data.getLen()); }
 private:

@@ -30,6 +30,7 @@ endmacro(PACK_STRING_TEST)
 
 PACK_STRING_TEST(test_pack_string)
 PACK_STRING_TEST(test_malloc_array)
+PACK_STRING_TEST(test_append_bytes)
 
 # Write a small build receipt #
 string(TIMESTAMP pack_string_build_time)
