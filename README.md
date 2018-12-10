@@ -26,6 +26,13 @@ To run the unit tests, run `make test`:
 $ make test
 ```
 
+## Usage
+
+`pack-string` is intended to be used as neat, concise interface for building binary formatted strings. The library contains two main classes:
+
+1. `MallocArray`
+2. `PackString`
+
 
 ## Purpose
 

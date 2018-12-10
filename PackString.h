@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <exception>
+#include <cstdio>
 #include <cstdlib>
 #include <cstdint>
 #include <algorithm>
@@ -111,6 +112,19 @@ private:
 };
 
 /**
+ * @brief Allows custom error messages to be formatted from
+ */
+struct PackStringException : public std::exception
+{
+
+	const char * what () const throw ()
+    {
+    	return message;
+    }
+    char message[256];
+};
+
+/**
  * @class PackString
  * @brief A special string class that allows packing objects into binary formats.
  */
@@ -172,6 +186,11 @@ public:
 	 *        append_bytes() as friend functions.
 	 */
 	void pushByte(unsigned char byte) { _data.push(byte); }
+
+	/** @brief Allows access to the pakced binary items according to
+	 *         existing indexes.
+	 */
+	const unsigned char* operator[] (size_t index) const;
 private:
 	void addNextIndex() { _indexes.push(_data.getLen()); }
 private:

@@ -18,3 +18,19 @@ MallocArrayException::MallocArrayException(MallocArrayException::ErrType code): 
 		        break;
 	}
 }
+
+
+const unsigned char* PackString::operator[] (size_t index) const
+{
+	try {
+		return &(_data[_indexes[index]]);
+	} catch(const MallocArrayException& exc) {
+		PackStringException pexc;
+		if(exc.code == MallocArrayException::OUT_OF_BOUNDS) {
+			std::sprintf(pexc.message, "PackString Exception: Index %lu does not exist.\n", index);
+		} else {
+			std::sprintf(pexc.message, "Pack String Exception: %s\n", exc.message);
+		}
+		throw pexc;
+	}
+}
