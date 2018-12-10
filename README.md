@@ -30,8 +30,30 @@ $ make test
 
 `pack-string` is intended to be used as neat, concise interface for building binary formatted strings. The library contains two main classes:
 
-1. `MallocArray`
-2. `PackString`
+1. `MallocArray`: A special vector-like class that uses `std::malloc` and `std::realloc`
+2. `PackString`: A String object that packs objects into binary strings, and records their offsets in the string.
+
+### Implementation
+
+With `pack-string`, you can write implmentations for your custom objects to be packed into the `PackString` instance.
+
+In order to this, you need a function signature of:
+
+```cpp
+void append_bytes(PackString& pstring, const Object& obj);
+```
+
+Where `Object` is a user defined class. Secondly, you need this declared as a `friend` function inside the class you want to use it for.
+
+```cpp
+
+class Object {
+	...
+	friend void append_bytes(PackString& pstring, const Object& obj);
+};
+```
+
+Then, use the `append_bytes` function for implementing custom behavior to what attributes or order of `Object` should be packed in.
 
 
 ## Purpose
